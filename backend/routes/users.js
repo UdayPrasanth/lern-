@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const User = require('../models/User');
+const User = require('../Models/User');
 
 const Course = require('../models/Course');
 // @route   PUT /api/users/change-password
