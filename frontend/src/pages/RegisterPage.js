@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 import { Button, TextField, Container, Box, Typography, RadioGroup, FormControlLabel, Radio, FormControl, FormLabel } from '@mui/material';
 import toast from 'react-hot-toast';
 
@@ -8,25 +9,18 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('student');
+  const { register } = useAuth(); // Use the register function from AuthContext
   const navigate = useNavigate();
-  const API = process.env.REACT_APP_API || 'http://localhost:5000/api';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role }),
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Failed to register');
-      }
-      toast.success('Registration successful! Please login.');
+      // Use the register function from the context
+      const data = await register(name, email, password, role);
+      toast.success(data.message || 'Registration successful! Please login.');
       navigate('/login');
     } catch (error) {
-      toast.error(error.message || 'An error occurred during registration.');
+      toast.error(error.message || 'Registration failed. Please try again.');
     }
   };
 
