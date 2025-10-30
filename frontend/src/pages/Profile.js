@@ -3,8 +3,7 @@ import { useAuth } from '../AuthContext';
 import { Box, Typography, Paper, CircularProgress, TextField, Button, Grid, Container } from '@mui/material';
 import ProfileImageUpload from '../components/ProfileImageUpload';
 import toast from 'react-hot-toast';
-
-const API = process.env.REACT_APP_API || 'http://localhost:5000/api';
+import API_URL from '../apiConfig'; // Use the centralized API URL
 
 const ProfilePage = () => {
   const { token } = useAuth();
@@ -16,7 +15,7 @@ const ProfilePage = () => {
       const fetchProfile = async () => {
         try {
           setLoading(true);
-          const res = await fetch(`${API}/profile/me`, {
+          const res = await fetch(`${API_URL}/api/profile/me`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           const data = await res.json();
@@ -59,7 +58,7 @@ const ProfilePage = () => {
     });
 
     try {
-      const res = await fetch(`${API}/profile/me`, {
+      const res = await fetch(`${API_URL}/api/profile/me`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: payload,
