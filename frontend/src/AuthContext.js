@@ -32,6 +32,20 @@ export function AuthProvider({ children }) {
     setUser(apiUser);
   };
 
+  const register = async (name, email, password, role) => {
+    const res = await fetch(`${API_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, role }),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to register');
+    }
+    // Registration successful, return the response data
+    return await res.json();
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -39,7 +53,7 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const value = { user, token, login, logout };
+  const value = { user, token, login, register, logout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

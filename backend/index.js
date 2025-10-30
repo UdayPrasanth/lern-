@@ -20,14 +20,17 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// Middleware to parse JSON bodies. This should be applied globally.
+app.use(express.json());
+
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static('uploads'));
 
 // Routes
-app.use('/api/auth', express.json(), authRoute); // Add express.json() middleware ONLY for auth routes
+app.use('/api/auth', authRoute);
 app.use('/api/courses', coursesRoute);
 app.use('/api/profile', profileRoute);
-app.use('/api/users', express.json(), usersRoute);
+app.use('/api/users', usersRoute);
 
 // Default route
 app.get('/', (req, res) => res.send({ status: 'lern backend running' }));
